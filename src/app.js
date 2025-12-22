@@ -6,6 +6,8 @@ const allowedOrigins = [
   "https://lacarta-two.vercel.app"
 ]
 
+const app = express()
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -19,9 +21,8 @@ app.use(
   })
 )
 
-const app = express()
 
-app.use(cors())
+// app.use(cors())
 app.use(express.json())
 
 app.get("/", (req, res) => {

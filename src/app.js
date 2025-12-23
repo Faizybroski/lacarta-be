@@ -3,18 +3,16 @@ import cors from "cors";
 
 const app = express();
 
-/* Allowed Origins */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://lacarta-two.vercel.app"
+  "https://lacarta-two.vercel.app",
 ];
 
-/* Middlewares */
 app.use(express.json());
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin(origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -24,5 +22,10 @@ app.use(
     credentials: true,
   })
 );
+
+// health check (IMPORTANT)
+app.get("/", (req, res) => {
+  res.json({ status: "OK", message: "API is running" });
+});
 
 export default app;

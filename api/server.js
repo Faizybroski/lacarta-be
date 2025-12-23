@@ -5,13 +5,19 @@ import authRoutes from "../src/Routes/authRoutes.js";
 
 dotenv.config();
 
-connectDB();
+// Connect DB once per cold start
+let isConnected = false;
+async function connectOnce() {
+  if (!isConnected) {
+    await connectDB();
+    isConnected = true;
+  }
+}
 
 app.use("/api/auth", authRoutes);
 
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Serverless handler
+export default async function handler(req, res) {
+  await connectOnce();
+  return app(req, res);
+}

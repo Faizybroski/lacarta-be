@@ -1,11 +1,13 @@
-import User from "../Models/user.js";
+import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-/* SIGN UP */
+/* ======================
+   SIGN UP
+====================== */
 export const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -22,14 +24,24 @@ export const signup = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role: role || "user", // ✅ default role
     });
+
+    // Generate token
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.status(201).json({
       message: "User registered successfully",
+      token,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
 
@@ -38,7 +50,9 @@ export const signup = async (req, res) => {
   }
 };
 
-/* LOGIN */
+/* ======================
+   LOGIN
+====================== */
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -69,6 +83,7 @@ export const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
 

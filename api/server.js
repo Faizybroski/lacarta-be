@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 // import 'dotenv/config'
 import app from "../src/app.js";
-import connectDB from "../src/Config/db.js";
+import connectDB from "../src/config/db.js";
 import authRoutes from "../src/Routes/authRoutes.js";
 import hotelBookingRoutes from "../src/routes/hotelBookingRoutes.js";
 import activityRoutes from "../src/routes/activityRoutes.js";

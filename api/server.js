@@ -12,7 +12,7 @@ import boatingRoutes from "../src/routes/boatingRoutes.js";
 import tourRoutes from "../src/routes/tourRoutes.js";
 import searchRoutes from '../src/routes/searchRoutes.js'
 
-dotenv.config({ path: '../.env' })
+dotenv.config({ path: new URL('../.env', import.meta.url) })
 
 // Connect DB once per cold start
 let isConnected = false;
